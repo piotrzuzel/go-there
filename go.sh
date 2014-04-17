@@ -1,7 +1,7 @@
 #!/bin/sh
 
 usage="$(basename "$0") [OPTION]... [DIR]...
-Program to quickly navigate between favorite directories.
+Quickly navigate between favorite directories.
 
     -a, --add - adds new entry with specified name, if no directory is specified current directory is taken as parameter
     -h, --help - displays this help message
@@ -16,7 +16,48 @@ function createSettings() {
     fi
 }
 
+function addAlias() {
+    echo "addalias"
+}
+
+function removeAlias() {
+    echo "ha"
+}
+
+function isAliasDefined() {
+    echo $1
+}
+
+function setLastDir() {
+    export last_dir=`pwd`
+}
+
+function readProperties() {
+    # save old Internal Field Separator shell variable
+    OIFS=$IFS
+    IFS='='
+
+    # set aliases array
+    aliases=()
+
+    # read settings file line by line
+    while read line
+    do
+        for i in ${line[@]}
+        do
+            aliases+=($line[0])
+            echo $i, ${line[0]}
+        done
+    done <$HOME/.go_config
+    export d=$aliases
+    # restore old IFS variable
+    IFS=$OIFS
+}
+
 createSettings
+isAliasDefined
+setLastDir
+readProperties
 
 if [ $# -lt 1 ]
 then
@@ -39,6 +80,9 @@ else
                 echo "removed"
                 # remove alias
             fi
+            ;;
+        *)
+            echo "default"
             ;;
     esac
 fi
