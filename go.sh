@@ -6,6 +6,7 @@ Quickly navigate between favorite directories.
     -a, --add - adds new entry with specified name, if no directory is specified current directory is taken as parameter
     -h, --help - displays this help message
     -l, --list - lists all existing directory aliases
+    -p, --print - prints directory under speciried alias
     -r, --remove - removes specified entry from database" 
 
 # creates ~/.go_config settings file if it doesn't exist
@@ -50,7 +51,7 @@ function readProperties() {
         done
     done <$HOME/.go_config
     export d=$aliases
-    # restore old IFS variable
+    # restore old IFS variable}
     IFS=$OIFS
 }
 
