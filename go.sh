@@ -1,5 +1,12 @@
 #!/bin/sh
 
+#
+# global settings
+#
+
+# config file location
+configFile=$HOME/.go-there_config
+
 usage="$(basename "$0") [OPTION]... [DIR]...
 Quickly navigate between favorite directories.
 
@@ -11,9 +18,9 @@ Quickly navigate between favorite directories.
 
 # creates ~/.go_config settings file if it doesn't exist
 function createSettings() {
-    if [ ! -f $HOME/.go_config ]
+    if [ ! -f $configFile ]
     then
-        touch $HOME/.go_config
+        touch $configFile
     fi
 }
 
@@ -49,7 +56,7 @@ function readProperties() {
             aliases+=($line[0])
             echo $i, ${line[0]}
         done
-    done <$HOME/.go_config
+    done <$configFile
     export d=$aliases
     # restore old IFS variable}
     IFS=$OIFS
@@ -69,10 +76,10 @@ else
             echo "ADD"
             ;;
         "-h" | "--help")
-            echo $usage
+            echo "$usage"
             ;;
         "-l" | "--list")
-            echo $usage
+            echo "$usage"
             ;;
         "-r" | "--remove")
             if [ -z "$2" ]; then
