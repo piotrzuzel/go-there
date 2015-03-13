@@ -25,7 +25,16 @@ function createSettings() {
 }
 
 function addAlias() {
-    echo "addalias"
+    if [ -z $2 ]
+    then
+        saveAlias $1 `pwd`
+    else
+        saveAlias $1 $2
+    fi
+}
+
+function saveAlias(){
+    echo $1=$2>>$configFile
 }
 
 function removeAlias() {
@@ -33,7 +42,7 @@ function removeAlias() {
 }
 
 function isAliasDefined() {
-    echo $1
+    bb=2
 }
 
 function setLastDir() {
@@ -47,14 +56,19 @@ function readProperties() {
 
     # set aliases array
     aliases=()
+    aliasvalues=()
 
     # read settings file line by line
     while read line
     do
+        #echo $line
+        # aliases+=$line[0]
+        # aliasvalues+=$line[1]
         for i in ${line[@]}
         do
             aliases+=($line[0])
-            echo $i, ${line[0]}
+            aliasvalues+=($line[1])
+            #echo $i
         done
     done <$configFile
     export d=$aliases
@@ -73,13 +87,15 @@ then
 else
     case "$1" in
         "-a" | "--add")
-            echo "ADD"
+            addAlias $2 $3
             ;;
         "-h" | "--help")
             echo "$usage"
             ;;
         "-l" | "--list")
-            echo "$usage"
+            for i in ${aliases[*]}; do
+                echo ${i[0]}
+            done
             ;;
         "-r" | "--remove")
             if [ -z "$2" ]; then
